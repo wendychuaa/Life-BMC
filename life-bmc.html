@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wendy's Life Canvas: I want a meaningful life!</title>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EDF1F8;--surf:#FFFFFF;--ink:#1B2340;--mut:#5A6485;--line:#CBD3E6;--sun:#F0A030;--sky:#3D5AFE;--soft:#DDE5FA;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A33;--surf:#1D2547;--ink:#EEF1FB;--mut:#A3ADD1;--line:#34406F;--sun:#F7B955;--sky:#8EA2FF;--soft:#27315C}}
+:root[data-theme="dark"]{--bg:#141A33;--surf:#1D2547;--ink:#EEF1FB;--mut:#A3ADD1;--line:#34406F;--sun:#F7B955;--sky:#8EA2FF;--soft:#27315C}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Nunito",system-ui,sans-serif}
+h1,h2,h3{font-family:"Gaegu","Comic Sans MS",cursive,sans-serif;line-height:1.1;margin:0;font-weight:700}
+main{max-width:1040px;margin:0 auto;padding:0 20px 80px}
+section{padding:56px 0 8px}
+h1{font-size:clamp(3.2rem,10vw,6rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(2.1rem,5vw,3rem);font-weight:700;margin-bottom:10px}
+p{max-width:64ch}.mut{color:var(--mut)}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.hero{padding-top:48px}
+.track{position:relative;height:84px;margin:34px 6px 10px;border-radius:44px;background:linear-gradient(90deg,#9FB3F5,#F8D38A 55%,#F0A030);}
+.pin{position:absolute;top:-26px;transform:translateX(-50%);font-size:.8rem;white-space:nowrap;font-weight:600}
+.pin::after{content:"";display:block;width:2px;height:26px;background:var(--ink);margin:0 auto}
+.dot{position:absolute;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:#fff;border:4px solid var(--ink)}
+.ticks{display:flex;justify-content:space-between;margin:0 6px;font-size:.8rem;color:var(--mut)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:10px 20px;font-weight:600}
+.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{background:transparent;border:0;padding:8px 20px;font-weight:600}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+input[type=time],textarea{background:var(--surf);border:1.5px solid var(--line);border-radius:12px;padding:9px 12px}
+textarea{width:100%;min-height:84px;resize:vertical}
+.canvas{display:grid;gap:10px;margin-top:20px;grid-template-columns:repeat(5,1fr);
+grid-template-areas:"kp ka vp cr cs" "kp kr vp ch cs" "cost cost cost rev rev"}
+.narrative-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+.story-card{position:relative;overflow:hidden;background:var(--surf);border:1.5px solid var(--line);border-radius:16px;padding:22px 20px;box-shadow:0 8px 24px rgba(27,35,64,.06)}
+.story-card::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:var(--sky)}
+.story-card.gap-card::before{background:var(--sun)}
+.card h4{font-family:"Gaegu","Comic Sans MS",cursive,sans-serif;font-size:1.8rem;font-weight:700;line-height:1.1;margin:4px 0 8px}
+.story-card p{margin:0;color:var(--mut);font-size:.96rem}
+.story-label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--sky)}
+.gap-card .story-label{color:var(--sun)}
+@media(max-width:760px){.narrative-grid{grid-template-columns:1fr}.story-card{padding:20px}}
+.blk{background:var(--surf);border:1.5px solid var(--line);border-radius:14px;padding:14px;text-align:left;min-height:150px;display:flex;flex-direction:column;gap:6px;transition:background .3s,border-color .3s}
+.blk b{font-family:"Gaegu","Comic Sans MS",cursive,sans-serif;font-size:1.25rem;font-weight:700}
+.blk small{color:var(--mut);font-size:.78rem}
+.blk span{font-size:.9rem;line-height:1.45}
+.blk.tobe{background:var(--soft);border-color:var(--sky)}
+.blk.gap{border-style:dashed;border-color:var(--sun);border-width:2.5px}
+@media(max-width:760px){.canvas{grid-template-columns:1fr;grid-template-areas:none}.blk{grid-area:auto!important;min-height:0}}
+.step{background:var(--surf);border:1.5px solid var(--line);border-radius:14px;padding:18px;margin-top:12px}
+.step.done{border-color:var(--sky)}
+.step h3{font-size:1.2rem;display:flex;gap:12px;align-items:center}
+.step h3 input{width:24px;height:24px;accent-color:var(--sky)}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin:8px 0 10px;font-size:.92rem}
+@media(max-width:600px){.meta{grid-template-columns:1fr}}
+.tag{font-weight:600}
+label.lg{display:block;font-size:.85rem;color:var(--mut);margin:10px 0 4px}
+.skills{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.skills label{background:var(--soft);border-radius:999px;padding:6px 14px;display:flex;gap:8px;align-items:center}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin-top:14px;max-width:420px}
+.bar i{display:block;height:100%;background:var(--sun);width:0;transition:width .4s}
+.sq{display:flex;gap:3px;flex-wrap:wrap;margin:8px 0 4px}.sq i{width:15px;height:15px;border-radius:4px;border:1.5px solid var(--line)}.sq i.done{background:var(--sky);border-color:var(--sky)}.sq i.partly{background:linear-gradient(135deg,var(--sky) 50%,transparent 50%);border-color:var(--sky)}.sq i.skipped{background:var(--sun);border-color:var(--sun)}
+.lg2{list-style:none;padding:0;margin:12px 0 0;font-size:.92rem}.lg2 li{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-top:1px solid var(--line)}.lg2 li span{flex:1}.lg2 button{background:none;border:0;color:var(--mut);text-decoration:underline;padding:0}
+input[type=date]{background:var(--surf);border:1.5px solid var(--line);border-radius:12px;padding:8px 12px}
+footer{margin-top:60px;color:var(--mut);font-size:.9rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+
+<section class="hero">
+  <p>G2 The Design of Business: Wendy Chua</p>
+  <h1>Welcome to Wendy's World!</h1>
+  <h2>What does it mean to lead a Meaningful Life?</h2>
+  <h3><u>Day 1: 22 October 2026 - #lastsembestsem</u></h3>
+  <p>With a full-time job lined up next August at J.P.Morgan, I’m already at the upper hand amongst my peers. I don’t have the anxiety of job searching, I don’t have to worry about my grades anymore, I don’t need to care too much. But with all the time in the world, why do I still feel like something is lacking? I don’t have anything planned for the next 10 months.</p>
+  <p>Should I be spending the time more wisely? Should I find another job, even though I don’t need to? Should I rest and lounge all day, where I fall asleep to Tik Toks in the background at 4am, then decide to get out of bed at 4pm only when I’ve reached a point where I think to myself, “What am I doing with my life?" </p>
+<p>I’ve worked so hard for the past few years, everything was leading up to this moment where my future is more certain. But why am I still worried of falling behind?
+Nothing changes if nothing changes.</p>
+  <p>They say it takes 21 days to build a habit. I invite you, Prof Say, to see the steps I’m trying to take to improve my life in the next 21 days.
+</p>
+  <p class="mut">Plot of my wake-up times:</p>
+  <div class="track" id="track" aria-label="Wake-up time track">
+    <div class="pin" style="left:77.8%">where I started: 4pm</div>
+    <div class="pin" style="left:33.3%;top:auto;bottom:-52px;transform:translateX(-50%);display:flex;flex-direction:column-reverse"><span>my target: 11am</span></div>
+  </div>
+  <div class="ticks"><span>8am</span><span>10am</span><span>12pm</span><span>2pm</span><span>4pm</span><span>5pm</span></div>
+  <div class="row" style="margin-top:44px">
+    <label for="wt">Today I woke up at</label>
+    <input type="time" id="wt" value="15:00">
+    <label for="wd">on</label>
+    <input type="date" id="wd" aria-label="Wake-up date">
+    <button class="btn" id="logw">Log wake-up</button>
+    <button class="btn alt" id="clrw">Clear log</button>
+  </div>
+  <p class="mut" id="wlog" style="margin-top:12px">No wake-ups logged yet. Log the first one honestly.</p>
+
+  <h3><u>Day 21: 12 November 2026 - #lastsembestsem</u></h3>
+  <p>In the past 3 weeks, I found myself consciously reminding myself of these micro-habits that I have set. From the plot above, I have accomplished my goal of waking up before 4pm everyday, with only one day that I woke up after. I try to put my phone away earlier so that I can wake up fresh. I also put in more effort into making my days more meaningful.</p>
+  <p>I feel that my condition has definitely gotten a bit better, even though I did not manage to accomplish every single goal every day. However, the feeling where I'm wasting my life away does come and go. It's definitely not something that I can get rid of in such a short period of time. It does make me hopeful, though, that you can restart your life whenever you want.</p>
+<p>I realised that I got energy from having conversations with my friends, and when I'm alone, it's easier to get lost in my own thoughts. I also realised that I do like recording my life and having something to look back on! I plan to brush up on my editing skills over the next few months. This activity has made me more mindful of how I want to lead my life, and I'm so grateful that I have this channel to attempt a 'Reset'.</p>
+
+<section>
+  <h2>Step 1 and 2: My life as a business</h2>
+  <p>Tap a block to flip it between where I am now and where I want to be (about the next 3 months). Orange dashed blocks are where there are gaps in my life. You can also flip everything at once by toggling between the 2 tabs:</p>
+  <div class="row">
+    <div class="seg" role="group" aria-label="Canvas version">
+      <button id="vAs" aria-pressed="true">As-is</button>
+      <button id="vTo" aria-pressed="false">To-be</button>
+    </div>
+  </div>
+  <div class="canvas" id="canvas"></div>
+  <h3 style="margin-top:28px">Overview</h3>
+  <div class="narrative-grid">
+    <article class="story-card">
+      <span class="story-label">Where I am now (#feelunalive)</span>
+      <h4>A Week with No Structure & Meaning :(</h4>
+      <p>Monday to Wednesday are full: capstone, teaching assistant shifts, pilates, friends. Thursday to Sunday have no shape. I sleep until 4pm, scroll, and the day is gone before it starts. The parts of my life that work, reading and my friends, never get an anchor on those days.</p>
+    </article>
+    <article class="story-card gap-card">
+      <span class="story-label">The macro gap</span>
+      <h4>Good foundations, uneven rhythm</h4>
+      <p>My relationships and routines are healthy, but four days a week have no structure, so my sleep and energy cost me the days I’m trying to enjoy. My JPMorgan start date in August 2027 gives me about nine months to build a rhythm I want to carry into the job.</p>
+    </article>
+    <article class="story-card">
+      <span class="story-label">Where I want to be (#feelalive)</span>
+      <h4>A Week with Structure & Meaning :)</h4>
+      <p>1. Wake up before 12pm everyday
+        <br>2. Inculcate a reading habit
+        <br>3. Utilise my free time to build three skills that would help me later: finance knowledge, video editing, and coding.</p>
+    </article>
+  </div>
+</section>
+
+<section>
+  <h2>Step 3: Micro-steps</h2>
+  <p>"If you fail to plan, you plan to fail."</p>
+  <p>The following habits are small but build up overtime. Everyday, I record down my efforts, while also acknowledging that there are good and bad days.</p>
+  <div class="bar"><i id="bar"></i></div>
+  <p class="mut" id="barTxt" style="margin-top:6px"></p>
+  <div id="steps"></div>
+
+<section>
+  <h2>Export my log</h2>
+  <p>When it’s time to submit, press this and send me the text. I’ll publish a final version with your real entries built in.</p>
+  <div class="row"><button class="btn" id="exp">Create export</button><span class="mut" id="expmsg"></span></div>
+  <textarea id="expout" style="min-height:160px;margin-top:12px" aria-label="Exported log" readonly></textarea>
+</section>
+
+<footer>Built by Wendy Chua, for Wendy Chua.</footer>
+</main>
+
+<script>
+var store={get:function(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+// ---- Canvas ----
+var B=[
+{a:"kp",n:"Who helps me",o:"Key Partners",gap:1,as:"Capstone and uni friends who make time for each other, plus family. No mentor yet.",to:"Same friends, plus one mentor or alumnus outside my daily circle."},
+{a:"ka",n:"What I do",o:"Key Activities",gap:1,as:"Busy Mon–Wed. Thu–Sun: gym, going out, bed rot, doom scrolling.",to:"A simple daily shape: wake before noon, read, one skill block, then gym or friends."},
+{a:"kr",n:"Who I am and what I have",o:"Key Resources",as:"JPM offer, reading habit, gym and pilates, teaching experience, loyal friends.",to:"Add: finance fundamentals, basic video editing, basic coding."},
+{a:"vp",n:"How I help",o:"Value Proposition",as:"I teach and support students as a TA, and I show up for friends.",to:"Same, with more to teach: I can explain finance and make things people watch or use."},
+{a:"cr",n:"How I interact",o:"Customer Relationships",as:"Warm and face-to-face with friends and students.",to:"Keep it face-to-face. Add one new conversation with someone further along."},
+{a:"ch",n:"How they know me",o:"Channels",as:"Classroom, dinners, drinks, word of mouth.",to:"Also something I’ve made: a short video or a small project to show."},
+{a:"cs",n:"Who I help",o:"Customer Segments",as:"My students, friends, family.",to:"Same people, plus future juniors at work."},
+{a:"cost",n:"What I give",o:"Cost Structure",gap:1,as:"Tuesday exhaustion, 10pm finishes, and four days a week of drifting time and energy.",to:"Less doomscrolling and a healthier sleep schedule."},
+{a:"rev",n:"What I get",o:"Revenue Streams",gap:1,as:"Happiness from hanging out with friends and a secured future.",to:"Add the pride of finishing small things, and a rhythm I like before August 2027."}];
+var cv=document.getElementById("canvas"),st=store.get("flip",{});
+function paint(){cv.innerHTML="";B.forEach(function(b){var t=st[b.a]===1,d=document.createElement("button");
+d.className="blk"+(t?" tobe":"")+(b.gap?" gap":"");d.style.gridArea=b.a;d.setAttribute("aria-label",b.n+" ("+b.o+"), showing "+(t?"to-be":"as-is")+". Tap to flip.");
+d.innerHTML="<b>"+b.n+"</b><small>"+b.o+(t?" (to-be)":" (as-is)")+"</small><span>"+(t?b.to:b.as)+"</span>";
+d.onclick=function(){st[b.a]=t?0:1;store.set("flip",st);paint();pressed()};cv.appendChild(d)});}
+function pressed(){var all=B.every(function(b){return st[b.a]===1}),none=B.every(function(b){return !st[b.a]});
+document.getElementById("vTo").setAttribute("aria-pressed",all);document.getElementById("vAs").setAttribute("aria-pressed",none)}
+function setAll(v){B.forEach(function(b){st[b.a]=v});store.set("flip",st);paint();pressed()}
+document.getElementById("vAs").onclick=function(){setAll(0)};document.getElementById("vTo").onclick=function(){setAll(1)};
+paint();pressed();
+
+// ---- Steps ----
+var S=[
+{t:"Shift my wake-up by one hour",g:"Wake an hour earlier than last time. Phone charges across the room.",r:"A drink I like.",x:"Then another hour every few days, aiming for 10–11am."},
+{t:"Read 20 minutes before my phone",g:"On free days, 20 minutes of a book before any scrolling.",r:"A café trip or a new book."},
+{t:"Skill taster: 20 minutes each",g:"Spend 20 minutes on each skill this week, then keep the one I want to continue.",r:"Something small and fun.",sk:["Finance knowledge","Video editing","Coding"]},
+{t:"Review",g:"Write what worked, what flopped, and what I’d change.",r:"A proper dinner with my friends."}];
+var sd=store.get("steps",{}),sc=document.getElementById("steps");
+function save(){store.set("steps",sd)}
+function rend(){sc.innerHTML="";var n=0;
+S.forEach(function(s,i){var o=sd[i]||(sd[i]={done:0,date:"",note:"",sk:{}});o.log=o.log||[];if(o.done)n++;
+var d=document.createElement("div");d.className="step"+(o.done?" done":"");
+var h='<h3>'+s.t+'</h3>'+
+'<div class="meta"><div><span class="tag">Goal:</span> '+s.g+(s.x?" "+s.x:"")+'</div><div><span class="tag">Reward:</span> '+s.r+'</div></div>';
+if(s.sk){h+='<div class="skills">';s.sk.forEach(function(k){h+='<label>'+k+'</label>'});h+='</div>'}
+h+='<p class="mut" style="margin:10px 0 0;font-size:.85rem">Last 28 days: blue = done, half = partly, orange = skipped, empty = no entry</p>'+sq(o)+'<div class="row"><div class="seg" role="group" aria-label="Status">'+["done","partly","skipped"].map(function(s,j){return '<button type="button" data-st="'+s+'" aria-pressed="'+(j===0)+'">'+s.charAt(0).toUpperCase()+s.slice(1)+'</button>'}).join('')+'</div><input type="date" class="dt" value="'+iso(new Date())+'" aria-label="Date"></div><label class="lg" for="n'+i+'">How it actually went</label><textarea id="n'+i+'" placeholder="What happened, how I felt, what I’d do differently."></textarea><div class="row"><button type="button" class="btn add">Add entry</button></div><ul class="lg2">'+o.log.map(function(e,j){return{e:e,j:j}}).sort(function(a,b){return a.e.d<b.e.d?1:-1}).map(function(x){return '<li><b>'+x.e.d+'</b><b>'+x.e.s+'</b><span>'+(x.e.n||"").replace(/</g,"&lt;")+'</span><button type="button" data-del="'+x.j+'">delete</button></li>'}).join('')+'</ul>';
+d.innerHTML=h;sc.appendChild(d);
+var sel="done";d.querySelectorAll("[data-st]").forEach(function(b){b.onclick=function(){sel=b.dataset.st;d.querySelectorAll("[data-st]").forEach(function(x){x.setAttribute("aria-pressed",x===b)})}});
+d.querySelector(".add").onclick=function(){var dv=d.querySelector(".dt").value;if(!dv)return;o.log.push({d:dv,s:sel,n:d.querySelector("#n"+i).value.trim()});save();rend()};
+d.querySelectorAll("[data-del]").forEach(function(b){b.onclick=function(){o.log.splice(+b.dataset.del,1);save();rend()}})});
+document.getElementById("bar").style.width=(n/S.length*100)+"%";
+var tot=0;S.forEach(function(s,i){tot+=(sd[i]&&sd[i].log?sd[i].log.length:0)});document.getElementById("barTxt").textContent=n+" of "+S.length+" steps completed, "+tot+" dated entries logged"}
+rend();
+
+function iso(d){var m=d.getMonth()+1,x=d.getDate();return d.getFullYear()+"-"+(m<10?"0":"")+m+"-"+(x<10?"0":"")+x}
+function sq(o){var h='<div class="sq">',n=new Date(),by={};(o.log||[]).forEach(function(e){by[e.d]=e.s});for(var k=27;k>=0;k--){var id=iso(new Date(n.getFullYear(),n.getMonth(),n.getDate()-k)),s=by[id]||"";h+='<i class="'+s+'" title="'+id+(s?": "+s:"")+'"></i>'}return h+'</div>'}
+document.getElementById("exp").onclick=function(){var t="MY LIFE BMC LOG\n\n";S.forEach(function(s,i){var o=sd[i]||{log:[]};t+="STEP "+(i+1)+": "+s.t+(o.done?" (completed)":"")+"\nGoal: "+s.g+"\nReward: "+s.r+"\n";if(s.sk){t+="Skills tried: "+s.sk.filter(function(k,j){return o.sk&&o.sk[j]}).join(", ")+"\n"}(o.log||[]).slice().sort(function(a,b){return a.d<b.d?-1:1}).forEach(function(e){t+="  "+e.d+" ["+e.s+"] "+(e.n||"")+"\n"});t+="\n"});t+="WAKE-UP LOG\n"+W.map(function(w){return "  "+w.d+" "+fmt(w.t)}).join("\n")+"\n\nWHAT I GOT WRONG\n"+store.get("wrong","")+"\n";var o=document.getElementById("expout");o.value=t;o.select();var m=document.getElementById("expmsg");try{navigator.clipboard.writeText(t).then(function(){m.textContent="Copied. Paste it into a message to me."},function(){m.textContent="Select all the text above and copy it."})}catch(e){m.textContent="Select all the text above and copy it."}};
+// ---- Free text ----
+document.querySelectorAll("textarea[data-k]").forEach(function(t){t.value=store.get(t.dataset.k,"");t.oninput=function(){store.set(t.dataset.k,t.value)}});
+
+// ---- Wake log ----
+var W=store.get("wake",[]);
+function pos(t){var p=t.split(":"),h=+p[0]+p[1]/60;return Math.max(0,Math.min(100,(h-8)/9*100))}
+function fmt(t){var p=t.split(":"),h=+p[0],a=h>=12?"pm":"am";return((h+11)%12+1)+":"+p[1]+a}
+document.getElementById("wd").value=iso(new Date());
+function wr(){var tr=document.getElementById("track");tr.querySelectorAll(".dot").forEach(function(d){d.remove()});
+tr.style.height="84px";
+W.forEach(function(w,i,a){var d=document.createElement("div");d.className="dot";d.style.left=pos(w.t)+"%";d.style.opacity=.35+.65*(i+1)/a.length;d.title=w.d+": "+fmt(w.t);tr.appendChild(d)});
+var el=document.getElementById("wlog");
+el.textContent=W.length?W.slice().reverse().map(function(w){return w.d+" "+fmt(w.t)}).join("  |  "):"No wake-ups logged yet. Log the first one honestly."}
+document.getElementById("logw").onclick=function(){var v=document.getElementById("wt").value,d=document.getElementById("wd").value;if(!v||!d)return;
+W.push({t:v,d:new Date(d+"T00:00:00").toLocaleDateString("en-SG",{day:"numeric",month:"short"})});store.set("wake",W);wr()};
+document.getElementById("clrw").onclick=function(){W=[];store.set("wake",W);wr()};
+wr();
+</script>
+</body>
+</html>
